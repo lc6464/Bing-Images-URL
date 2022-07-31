@@ -1,7 +1,8 @@
 name: Auto Update Daily
 on:
     schedule:
-        - cron: '0 23 */1 * *'
+        - cron: '0 14 */1 * *' # UTC+8 22:00
+    workflow_dispatch:
 
 jobs:
     update-css:
