@@ -15,7 +15,8 @@ jobs:
             - name: Download File
               shell: pwsh
               run: |
-                iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$((date).Year)/$((date).ToString("yyyyMM")).txt"
+                $cstNow = [TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, [TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time"))
+                iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", null)).txt"
 
 
             - name: Upload file
