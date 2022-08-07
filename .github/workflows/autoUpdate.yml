@@ -13,14 +13,9 @@ jobs:
 
 
             - name: Download File
-              uses: carlosperate/download-file-action@v1.0.0
-              with:
-                file-url: https://lcwebsite.cn/aka/bing-images-url.aspx
-                location: ./2022/
-            
-
-            - name: Log Information
-              run: echo "The file was downloaded to ${{ steps.download-file.outputs.file-path }}"
+              shell: pwsh
+              run: |
+                iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$((date).Year)/$((date).ToString("yyyyMM")).txt"
 
 
             - name: Upload file
