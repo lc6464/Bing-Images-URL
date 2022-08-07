@@ -5,7 +5,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    update-css:
+    update-file:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
@@ -16,7 +16,7 @@ jobs:
               shell: pwsh
               run: |
                 $cstNow = [TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, [TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time"))
-                iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", null)).txt"
+                iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", $null)).txt"
 
 
             - name: Upload file
