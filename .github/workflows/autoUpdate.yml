@@ -16,7 +16,9 @@ jobs:
         shell: pwsh
         run: |
           $cstNow = [TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, [TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time"))
-          mkdir $cstNow.Year
+          if (!(Test-Path $cstNow.Year)) {
+            mkdir $cstNow.Year
+          }
           iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", $null)).txt"
 
 
