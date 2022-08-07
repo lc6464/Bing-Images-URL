@@ -1,30 +1,34 @@
 name: Auto Update Daily
 on:
-    schedule:
-        - cron: '0 14 */1 * *' # UTC+8 22:00
-    workflow_dispatch:
+  schedule:
+    - cron: '0 14 */1 * *' # UTC+8 22:00
+  workflow_dispatch:
 
 jobs:
-    update-file:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Download File
-              shell: pwsh
-              run: |
-                $cstNow = [TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, [TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time"))
-                mkdir $cstNow.Year
-                iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", $null)).txt"
+  update-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
 
-            - name: Upload file
-              env:
-                GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-              run: |
-                export FILE_NAME="$(TZ=UTC-8 date +%Y)/$(TZ=UTC-8 date +%Y%m).txt"
-                export MESSAGE="Auto update."
-                export SHA=$( git rev-parse main:$FILE_NAME )
-                gh api --method PUT /repos/:owner/:repo/contents/$FILE_NAME \
-                  --field message="$MESSAGE" \
-                  --field content=@<( base64 -i $FILE_NAME ) \
-                  --field branch="main" \
-                  --field sha="$SHA"
+      - name: Download File
+        shell: pwsh
+        run: |
+          $cstNow = [TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, [TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time"))
+          mkdir $cstNow.Year
+          iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", $null)).txt"
+
+
+      - name: Upload file
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          export FILE_NAME="$(TZ=UTC-8 date +%Y)/$(TZ=UTC-8 date +%Y%m).txt"
+          export MESSAGE="Auto update."
+          export SHA=$( git rev-parse main:$FILE_NAME )
+          gh api --method PUT /repos/:owner/:repo/contents/$FILE_NAME \
+            --field message="$MESSAGE" \
+            --field content=@<( base64 -i $FILE_NAME ) \
+            --field branch="main" \
+            --field sha="$SHA"
