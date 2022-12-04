@@ -26,7 +26,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
-          export FILE_NAME="$(TZ=UTC-8 date +%Y)/$(TZ=UTC-8 date +%Y%m).txt"
+          export FILE_NAME="$(TZ=UTC-8 date +%Y)/$(TZ=UTC-8 date +%Y%m).yaml"
           export MESSAGE="Auto update."
           export SHA=$( git rev-parse main:$FILE_NAME )
           gh api --method PUT /repos/:owner/:repo/contents/$FILE_NAME \
