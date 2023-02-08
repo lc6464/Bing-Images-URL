@@ -24,7 +24,7 @@ jobs:
 
       - name: Upload file
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
           export FILE_NAME="$(TZ=UTC-8 date +%Y)/$(TZ=UTC-8 date +%Y%m).txt"
           export MESSAGE="Auto update."
