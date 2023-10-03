@@ -19,7 +19,7 @@ jobs:
           if (!(Test-Path $cstNow.Year)) {
             mkdir $cstNow.Year
           }
-          iwr https://lcwebsite.cn/aka/bing-images-url.aspx -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM", $null)).txt"
+          iwr "https://api.lcwebsite.cn/Cache/Bing/$($cstNow.ToString("yyyyMM")).txt" -OutFile "$($cstNow.Year)/$($cstNow.ToString("yyyyMM")).txt"
 
 
       - name: Upload file
